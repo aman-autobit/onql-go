@@ -39,7 +39,7 @@ var globalSDK *ONQLsdk
 
 // Init initializes the SDK and NATS connection
 func Init(subject string) {
-	nc, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect("nats://host.docker.internal:4222")
 	if err != nil {
 		log.Fatal("❌ Failed to connect", err)
 	}
