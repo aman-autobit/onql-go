@@ -80,11 +80,23 @@ func Respond(original Message, resp Response) {
 }
 
 // Subscribe to a topic and handle incoming messages
-func Subscribe(subject string, handler func(Message)) error {
+//
+//	func Subscribe(subject string, handler func(Message)) error {
+//		_, err := globalSDK.nc.Subscribe(subject, func(m *nats.Msg) {
+//			var msg Message
+//			json.Unmarshal(m.Data, &msg)
+//			handler(msg)
+//		})
+//		return err
+//	}
+func Subscribe(subject string, handler func(Message) Response) error {
 	_, err := globalSDK.nc.Subscribe(subject, func(m *nats.Msg) {
 		var msg Message
 		json.Unmarshal(m.Data, &msg)
-		handler(msg)
+
+		resp := handler(msg)
+		data, _ := json.Marshal(resp)
+		m.Respond(data) // 🔥 use reply subject from NATS
 	})
 	return err
 }
