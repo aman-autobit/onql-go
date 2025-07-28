@@ -17,6 +17,7 @@ type Message struct {
 
 // Response defines standard reply format
 type Response struct {
+	Reqid   string `json:"reqId,omitempty"`
 	Status  string `json:"status"` // "ok" / "error"
 	Message string `json:"message"`
 	Data    string `json:"data,omitempty"`
